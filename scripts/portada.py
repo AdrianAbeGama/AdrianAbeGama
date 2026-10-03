@@ -399,76 +399,6 @@ def arquitectura():
     guardar("arquitectura.svg", svg(H, cuerpo))
 
 
-# ---------------------------------------------------------------- 7. memes (rotan en una sola ventana)
-def memes():
-    H, T = 420, 21.0
-    escenas = 3
-    tramo = T / escenas
-
-    def kf(nombre, inicio, fin):
-        a, b = inicio / T * 100, fin / T * 100
-        return f'@keyframes {nombre}{{0%,{a:.2f}%{{opacity:0;transform:translateY(10px)}}{a+1.2:.2f}%,{b-1.2:.2f}%{{opacity:1;transform:none}}{b:.2f}%,100%{{opacity:0}}}}'
-
-    css, cuerpo, n = [], [], 0
-
-    def el(texto_svg, inicio, fin):
-        nonlocal n
-        n += 1
-        css.append(f'.m{n}{{opacity:0;animation:m{n} {T}s infinite}}' + kf(f"m{n}", inicio, fin))
-        return f'<g class="m{n}">{texto_svg}</g>'
-
-    # escena 1: git log
-    ini, fin = 0, tramo
-    cuerpo.append(el(f'<text x="50" y="118" font-size="20" fill="{AZUL}">$ <tspan fill="{TEXTO}">git log --oneline</tspan></text>', ini + .2, fin))
-    commits = [("a1f3c2e", "arreglo final"), ("b7d9e01", "arreglo final (ahora sí)"), ("c4e8a77", "arreglo final final"),
-               ("d2b6f19", "ok, este es el bueno"), ("e9a0c3d", "por favor funciona"), ("f00d4e2", "funciona. NO TOCAR")]
-    for i, (h, m) in enumerate(commits):
-        cuerpo.append(el(f'<text x="50" y="{160 + i*36}" font-size="20"><tspan fill="{AMBAR}">{h}</tspan>  <tspan fill="{TEXTO}">{escape(m)}</tspan></text>', ini + .8 + i * .5, fin))
-    # escena 2: logros
-    ini, fin = tramo, 2 * tramo
-
-    def logro(y, titulo, detalle, num):
-        return f'''<rect x="150" y="{y}" width="900" height="110" rx="14" fill="{BARRA}" stroke="{AZUL}" stroke-width="1.5"/>
-<rect x="176" y="{y+25}" width="60" height="60" rx="12" fill="#10213a" stroke="{AZUL}" stroke-width="1.5"/>
-<path d="M195 {y+41}h22v10a11 11 0 0 1-22 0zM195 {y+45}h-6a5 5 0 0 0 6 8M217 {y+45}h6a5 5 0 0 1-6 8M206 {y+62}v7M198 {y+72}h16" fill="none" stroke="{AMBAR}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="262" y="{y+40}" font-size="15" fill="{AZUL}" letter-spacing="3">★ LOGRO DESBLOQUEADO · ACH {num}/10</text>
-<text x="262" y="{y+72}" font-size="24" fill="{TEXTO}" font-weight="bold">{escape(titulo)}</text>
-<text x="262" y="{y+96}" font-size="16" fill="{SUAVE}">{escape(detalle)}</text>'''
-
-    cuerpo.append(el(logro(110, "Funciona en mi máquina", "Raro: el 99% de los devs ya lo tiene.", 3), ini + .4, fin))
-    cuerpo.append(el(logro(250, "Arreglé 1 bug, salieron 3", "Nivel: hidra. Sigue así.", 7), ini + 1.8, fin))
-    # escena 3: mi día como dev
-    ini, fin = 2 * tramo, T
-    barras = [("Escribir código", 15), ("Buscar por qué no funciona", 60), ('"Es un cambio pequeño" (no lo era)', 20), ("Café", 5)]
-    for i, (t, v) in enumerate(barras):
-        y = 120 + i * 70
-        cuerpo.append(el(f'''<text x="80" y="{y}" font-size="19" fill="{TEXTO}">{escape(t)}</text><text x="1120" y="{y}" font-size="19" fill="{AZUL}" text-anchor="end">{v}%</text>
-<rect x="80" y="{y+14}" width="1040" height="16" rx="8" fill="{BARRA}" stroke="{BORDE}"/>
-<rect x="80" y="{y+14}" width="{1040*v/100:.0f}" height="16" rx="8" fill="{AMBAR if i == 1 else AZUL}"/>''', ini + .3 + i * .45, fin))
-    titulos = ["~/mi-proyecto — git log", "~/notificaciones", "~/mi-dia-como-dev — top"]
-    for i, t in enumerate(titulos):
-        cuerpo.append(el(f'<text x="108" y="40" font-size="18" fill="{TENUE}">{t}</text>', i * tramo, (i + 1) * tramo))
-    puntos = "".join(f'<circle cx="{W/2 - 24 + i*24}" cy="{H-28}" r="5" fill="{BORDE}"/>' for i in range(3))
-    puntos += "".join(el(f'<circle cx="{W/2 - 24 + i*24}" cy="{H-28}" r="5" fill="{AZUL}"/>', i * tramo, (i + 1) * tramo) for i in range(3))
-    marco = f'''<circle cx="34" cy="34" r="7" fill="#ff5f57"/><circle cx="58" cy="34" r="7" fill="#febc2e"/><circle cx="82" cy="34" r="7" fill="#28c840"/>
-<text x="{W-32}" y="40" font-size="18" fill="{TENUE}" text-anchor="end">cat memes.txt</text>
-<line x1="2" y1="64" x2="{W-2}" y2="64" stroke="{BORDE}" stroke-width="2"/>'''
-    guardar("memes.svg", svg(H, marco + "".join(cuerpo) + puntos, "\n".join(css)))
-
-
-# ---------------------------------------------------------------- 8. logro secreto
-def secreto():
-    H = 170
-    cuerpo = f'''<g class="sube" {d(0.2)}>
-<rect x="150" y="30" width="900" height="110" rx="14" fill="{BARRA}" stroke="{AZUL}" stroke-width="1.5"/>
-<rect x="176" y="55" width="60" height="60" rx="12" fill="#10213a" stroke="{AZUL}" stroke-width="1.5"/>
-<path d="M195 71h22v10a11 11 0 0 1-22 0zM195 75h-6a5 5 0 0 0 6 8M217 75h6a5 5 0 0 1-6 8M206 92v7M198 102h16" fill="none" stroke="{AMBAR}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-<text x="262" y="70" font-size="15" fill="{AZUL}" letter-spacing="3">★ LOGRO SECRETO · ACH 10/10</text>
-<text x="262" y="102" font-size="24" fill="{TEXTO}" font-weight="bold">Leíste hasta el final</text>
-<text x="262" y="126" font-size="16" fill="{SUAVE}">Te debo un café. Escríbeme: portafoliogama.vercel.app</text></g>'''
-    guardar("secreto.svg", svg(H, cuerpo))
-
-
 # ---------------------------------------------------------------- 9. minijuego: Bug Invaders
 SPRITES = {
     "pulpo": (["...##...", "..####..", ".######.", "##.##.##", "########", "..#..#..", ".#.##.#.", "#.#..#.#"],
@@ -586,6 +516,141 @@ def invasores():
     guardar("bug-invaders.svg", svg(H, hud + "".join(cuerpo), "\n".join(css)))
 
 
+# ---------------------------------------------------------------- 10. minijuego: python.exe (snake)
+def serpiente():
+    """Snake que se juega solo: busca cada símbolo de código por el camino más corto (BFS) y crece."""
+    import random
+    from collections import deque
+
+    H, COLS, FILAS, CELDA, DT = 500, 34, 11, 28, 0.11
+    x0, y0 = (W - COLS * CELDA) // 2, 128
+    fichas = [";", "{}", "=>", "()", "[]", "</>", "&&", "++", "#", "λ"]
+    azar = random.Random(7)
+    cuerpo_s = deque([(4 - i, 5) for i in range(4)])  # la cabeza va primero
+    crecer, cuadros, comidas = 0, [], []
+
+    def nueva_comida():
+        libres = [(c, f) for c in range(COLS) for f in range(FILAS) if (c, f) not in cuerpo_s]
+        return azar.choice(libres)
+
+    def camino(meta):
+        ocupado = set(list(cuerpo_s)[:-1])
+        cola, previo = deque([cuerpo_s[0]]), {cuerpo_s[0]: None}
+        while cola:
+            actual = cola.popleft()
+            if actual == meta:
+                break
+            for dc, df in ((1, 0), (0, 1), (-1, 0), (0, -1)):
+                sig = (actual[0] + dc, actual[1] + df)
+                if 0 <= sig[0] < COLS and 0 <= sig[1] < FILAS and sig not in ocupado and sig not in previo:
+                    previo[sig] = actual
+                    cola.append(sig)
+        if meta not in previo:
+            return None
+        paso = meta
+        while previo[paso] != cuerpo_s[0]:
+            paso = previo[paso]
+        return paso
+
+    comida, aparece = nueva_comida(), 0
+    while len(comidas) < len(fichas):
+        cuadros.append(list(cuerpo_s))
+        sig = camino(comida)
+        if sig is None:  # sin camino: cualquier casilla libre al lado
+            c, f = cuerpo_s[0]
+            libres = [(c + a, f + b) for a, b in ((1, 0), (0, 1), (-1, 0), (0, -1))
+                      if 0 <= c + a < COLS and 0 <= f + b < FILAS and (c + a, f + b) not in cuerpo_s]
+            sig = libres[0]
+        cuerpo_s.appendleft(sig)
+        if crecer:
+            crecer -= 1
+        else:
+            cuerpo_s.pop()
+        if sig == comida:
+            comidas.append((comida, aparece, len(cuadros)))
+            crecer += 2
+            if len(comidas) < len(fichas):
+                comida, aparece = nueva_comida(), len(cuadros)
+    cuadros.append(list(cuerpo_s))
+    N = len(cuadros)
+    T = N * DT + 2.6
+    pct = lambda t: f"{t / T * 100:.3f}%"
+    xy = lambda c, f: (x0 + c * CELDA, y0 + f * CELDA)
+    css, partes, n = [], [], 0
+
+    def anim(kf, extra="animation-timing-function:step-end"):
+        nonlocal n
+        n += 1
+        css.append(f".s{n}{{animation:s{n} {T:.2f}s linear infinite;{extra}}}@keyframes s{n}{{{kf}}}")
+        return f"s{n}"
+
+    # tablero
+    partes.append("".join(f'<rect x="{xy(c, f)[0]+2}" y="{xy(c, f)[1]+2}" width="{CELDA-4}" height="{CELDA-4}" rx="5" fill="#0d1524"/>'
+                          for c in range(COLS) for f in range(FILAS)))
+    # cuerpo: cada casilla se prende mientras la serpiente pasa por ella
+    tramos = {}
+    for t, s in enumerate(cuadros):
+        for celda in s[1:]:
+            tramos.setdefault(celda, []).append(t)
+    for celda, ticks in tramos.items():
+        kf, inicio, prev = ["0%{opacity:0}"], ticks[0], ticks[0]
+        for t in ticks[1:] + [None]:
+            if t is None or t != prev + 1:
+                kf.append(f"{pct(inicio * DT)}{{opacity:1}}{pct((prev + 1) * DT)}{{opacity:0}}")
+                inicio = t
+            prev = t if t is not None else prev
+        kf.append("100%{opacity:0}")
+        x, y = xy(*celda)
+        partes.append(f'<rect class="{anim("".join(kf))}" style="opacity:0" x="{x+3}" y="{y+3}" width="{CELDA-6}" height="{CELDA-6}" rx="6" fill="{AZUL}"/>')
+    # cabeza
+    kf = "".join(f"{pct(t * DT)}{{transform:translate({xy(*s[0])[0]}px,{xy(*s[0])[1]}px);opacity:1}}" for t, s in enumerate(cuadros))
+    kf += f"{pct(N * DT)},100%{{opacity:0}}"
+    partes.append(f'<g class="{anim(kf)}"><rect x="2" y="2" width="{CELDA-4}" height="{CELDA-4}" rx="7" fill="{TEXTO}"/>'
+                  f'<rect x="{CELDA/2-6}" y="{CELDA/2-4}" width="4" height="4" fill="{FONDO}"/><rect x="{CELDA/2+2}" y="{CELDA/2-4}" width="4" height="4" fill="{FONDO}"/></g>')
+    # comida y "+2"
+    for i, ((c, f), t0, t1) in enumerate(comidas):
+        x, y = xy(c, f)
+        vis = anim(f"0%{{opacity:0}}{pct(t0 * DT)}{{opacity:1}}{pct(t1 * DT)}{{opacity:0}}100%{{opacity:0}}")
+        sube = anim(f"0%,{pct(t1 * DT)}{{opacity:0;transform:translateY(0)}}{pct(t1 * DT + 0.05)}{{opacity:1}}{pct(t1 * DT + 0.7)}{{opacity:0;transform:translateY(-22px)}}100%{{opacity:0}}",
+                    "animation-timing-function:ease-out")
+        partes.append(f'''<g class="{vis}" style="opacity:0"><rect class="pulso" x="{x+1}" y="{y+1}" width="{CELDA-2}" height="{CELDA-2}" rx="7" fill="#2a1a08" stroke="{AMBAR}" stroke-width="1.5"/>
+<text x="{x + CELDA/2}" y="{y + CELDA/2 + 5}" font-size="{15 if len(fichas[i]) < 3 else 12}" fill="{AMBAR}" text-anchor="middle" font-weight="bold">{escape(fichas[i])}</text></g>
+<text class="{sube}" style="opacity:0" x="{x + CELDA/2}" y="{y - 4}" font-size="15" fill="{TEXTO}" text-anchor="middle" font-weight="bold">+2</text>''')
+    # marcador
+    cortes = [0] + [t1 for _, _, t1 in comidas] + [None]
+    for k in range(len(cortes) - 1):
+        t0, t1 = cortes[k] * DT, (cortes[k + 1] * DT if cortes[k + 1] is not None else T)
+        kf = (f"0%{{opacity:0}}{pct(t0)}{{opacity:1}}{pct(t1)}{{opacity:0}}100%{{opacity:0}}" if k else f"0%{{opacity:1}}{pct(t1)}{{opacity:0}}100%{{opacity:0}}")
+        oculto = ' style="opacity:0"' if k else ""
+        partes.append(f'<text class="{anim(kf)}"{oculto} x="60" y="106" font-size="20" fill="{TEXTO}">TOKENS <tspan fill="{AMBAR}">{k:02d}/{len(fichas)}</tspan>  <tspan fill="{TENUE}">·</tspan>  LARGO <tspan fill="{AZUL}">{4 + 2*k:02d}</tspan></text>')
+    fin = anim(f"0%,{pct(N * DT)}{{opacity:0;transform:scale(.92)}}{pct(N * DT + 0.25)},{pct(T - 0.35)}{{opacity:1;transform:none}}{pct(T - 0.05)},100%{{opacity:0}}",
+               "animation-timing-function:ease-out;transform-origin:600px 282px")
+    partes.append(f'''<g class="{fin}" style="opacity:0"><rect x="330" y="222" width="540" height="120" rx="14" fill="{FONDO}" fill-opacity=".92" stroke="{VERDE}" stroke-width="2"/>
+<text x="600" y="276" font-size="32" fill="{VERDE}" text-anchor="middle" font-weight="bold" letter-spacing="4">BUILD SUCCESSFUL</text>
+<text x="600" y="312" font-size="18" fill="{SUAVE}" text-anchor="middle">{len(fichas)} tokens · 0 errores · compilado en {N*DT:.1f}s</text></g>''')
+    hud = f'''{barra("~/python.exe — la única serpiente que sé domar", "snake")}
+<text x="{W-60}" y="106" font-size="20" fill="{AMBAR}" text-anchor="end" font-weight="bold" letter-spacing="6">PYTHON.EXE</text>
+<text x="60" y="{H-26}" font-size="14" fill="{TENUE}"># busca cada símbolo por el camino más corto (BFS) · generado con Python</text>'''
+    guardar("python-exe.svg", svg(H, hud + "".join(partes), "\n".join(css)))
+
+
+# ---------------------------------------------------------------- 11. cierre
+def cierre():
+    H = 300
+    lineas = [
+        (f'<tspan fill="{AZUL}">$</tspan> <tspan fill="{TEXTO}">./contratar.sh --dev adrian</tspan>', 0.3),
+        (f'<tspan fill="{SUAVE}">&gt; conectando con adrian@abegama ......</tspan> <tspan fill="{VERDE}">[ OK ]</tspan>', 1.1),
+        (f'<tspan fill="{SUAVE}">&gt; estado</tspan><tspan x="230" fill="{VERDE}">● disponible para proyectos</tspan>', 1.6),
+        (f'<tspan fill="{SUAVE}">&gt; hago</tspan><tspan x="230" fill="{TEXTO}">apps · tiendas online · paneles · sistemas a medida</tspan>', 2.0),
+        (f'<tspan fill="{SUAVE}">&gt; portafolio</tspan><tspan x="230" fill="{AZUL}" text-decoration="underline">portafoliogama.vercel.app</tspan>', 2.4),
+    ]
+    cuerpo = barra("~ — zsh", "DCG Triak · Arequipa, Perú")
+    for i, (t, dl) in enumerate(lineas):
+        cuerpo += f'<text class="ap" {d(dl)} x="48" y="{110 + i*36}" font-size="21">{t}</text>'
+    cuerpo += f'<rect class="ap" style="animation:ap .1s 2.8s forwards, parpadeo 1.1s steps(1) 2.9s infinite" x="48" y="{110 + len(lineas)*36 - 18}" width="12" height="22" fill="{AZUL}"/>'
+    guardar("cierre.svg", svg(H, cuerpo))
+
+
 def sprite_libre(filas, x, y, p):
     return "".join(f'<rect x="{x + c*p}" y="{y + f*p}" width="{p}" height="{p}"/>'
                    for f, linea in enumerate(filas) for c, v in enumerate(linea) if v == "#")
@@ -601,5 +666,5 @@ if __name__ == "__main__":
     otros()
     neofetch()
     arquitectura()
-    memes()
-    secreto()
+    serpiente()
+    cierre()

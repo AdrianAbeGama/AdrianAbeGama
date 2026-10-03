@@ -34,14 +34,8 @@
 
 <img src="assets/arquitectura.svg" alt="Cómo construyo: app y web → Supabase (Auth, RLS, Edge Functions) → Postgres" width="100%">
 
-<img src="assets/memes.svg" alt="Memes: git log de arreglos finales, logros desbloqueados y mi día como dev" width="100%">
+<img src="assets/python-exe.svg" alt="python.exe: un Snake que se come símbolos de código buscando el camino más corto" width="100%">
 
-<details>
-  <summary><code>↑ ↑ ↓ ↓ ← → ← → B A</code></summary>
-  <br>
-  <img src="assets/secreto.svg" alt="Logro secreto: leíste hasta el final" width="100%">
-</details>
-
-<p align="center">
-  <sub>🔒 el código de mis clientes vive en repos privados · estos paneles y el minijuego los dibuja <a href="scripts/portada.py">Python</a>, en SVG animado puro</sub>
-</p>
+<a href="https://portafoliogama.vercel.app">
+  <img src="assets/cierre.svg" alt="./contratar.sh — disponible para proyectos · portafoliogama.vercel.app" width="100%">
+</a>
