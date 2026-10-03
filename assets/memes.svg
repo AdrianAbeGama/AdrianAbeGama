@@ -1,0 +1,61 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="420" viewBox="0 0 1200 420" font-family="Consolas, 'Cascadia Mono', 'SF Mono', Menlo, 'DejaVu Sans Mono', monospace">
+<style>
+.ap{opacity:0;animation:ap .5s cubic-bezier(.2,.8,.2,1) forwards}
+.sube{opacity:0;transform:translateY(14px);animation:sube .6s cubic-bezier(.2,.8,.2,1) forwards}
+.cursor{animation:parpadeo 1.1s steps(1) infinite}
+.pulso{animation:pulso 2s ease-in-out infinite}
+.px{opacity:0;animation:ap .08s forwards}
+@keyframes ap{to{opacity:1}}
+@keyframes sube{to{opacity:1;transform:none}}
+@keyframes parpadeo{50%{opacity:0}}
+@keyframes pulso{50%{opacity:.35}}
+.m1{opacity:0;animation:m1 21.0s infinite}@keyframes m1{0%,0.95%{opacity:0;transform:translateY(10px)}2.15%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m2{opacity:0;animation:m2 21.0s infinite}@keyframes m2{0%,3.81%{opacity:0;transform:translateY(10px)}5.01%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m3{opacity:0;animation:m3 21.0s infinite}@keyframes m3{0%,6.19%{opacity:0;transform:translateY(10px)}7.39%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m4{opacity:0;animation:m4 21.0s infinite}@keyframes m4{0%,8.57%{opacity:0;transform:translateY(10px)}9.77%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m5{opacity:0;animation:m5 21.0s infinite}@keyframes m5{0%,10.95%{opacity:0;transform:translateY(10px)}12.15%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m6{opacity:0;animation:m6 21.0s infinite}@keyframes m6{0%,13.33%{opacity:0;transform:translateY(10px)}14.53%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m7{opacity:0;animation:m7 21.0s infinite}@keyframes m7{0%,15.71%{opacity:0;transform:translateY(10px)}16.91%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m8{opacity:0;animation:m8 21.0s infinite}@keyframes m8{0%,35.24%{opacity:0;transform:translateY(10px)}36.44%,65.47%{opacity:1;transform:none}66.67%,100%{opacity:0}}
+.m9{opacity:0;animation:m9 21.0s infinite}@keyframes m9{0%,41.90%{opacity:0;transform:translateY(10px)}43.10%,65.47%{opacity:1;transform:none}66.67%,100%{opacity:0}}
+.m10{opacity:0;animation:m10 21.0s infinite}@keyframes m10{0%,68.10%{opacity:0;transform:translateY(10px)}69.30%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+.m11{opacity:0;animation:m11 21.0s infinite}@keyframes m11{0%,70.24%{opacity:0;transform:translateY(10px)}71.44%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+.m12{opacity:0;animation:m12 21.0s infinite}@keyframes m12{0%,72.38%{opacity:0;transform:translateY(10px)}73.58%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+.m13{opacity:0;animation:m13 21.0s infinite}@keyframes m13{0%,74.52%{opacity:0;transform:translateY(10px)}75.72%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+.m14{opacity:0;animation:m14 21.0s infinite}@keyframes m14{0%,0.00%{opacity:0;transform:translateY(10px)}1.20%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m15{opacity:0;animation:m15 21.0s infinite}@keyframes m15{0%,33.33%{opacity:0;transform:translateY(10px)}34.53%,65.47%{opacity:1;transform:none}66.67%,100%{opacity:0}}
+.m16{opacity:0;animation:m16 21.0s infinite}@keyframes m16{0%,66.67%{opacity:0;transform:translateY(10px)}67.87%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+.m17{opacity:0;animation:m17 21.0s infinite}@keyframes m17{0%,0.00%{opacity:0;transform:translateY(10px)}1.20%,32.13%{opacity:1;transform:none}33.33%,100%{opacity:0}}
+.m18{opacity:0;animation:m18 21.0s infinite}@keyframes m18{0%,33.33%{opacity:0;transform:translateY(10px)}34.53%,65.47%{opacity:1;transform:none}66.67%,100%{opacity:0}}
+.m19{opacity:0;animation:m19 21.0s infinite}@keyframes m19{0%,66.67%{opacity:0;transform:translateY(10px)}67.87%,98.80%{opacity:1;transform:none}100.00%,100%{opacity:0}}
+</style>
+<defs>
+  <pattern id="puntos" width="24" height="24" patternUnits="userSpaceOnUse"><circle cx="1" cy="1" r="1" fill="#16213a"/></pattern>
+  <radialGradient id="luz" cx="50%" cy="0%" r="70%"><stop offset="0" stop-color="#4d9fff" stop-opacity=".14"/><stop offset="1" stop-color="#4d9fff" stop-opacity="0"/></radialGradient>
+</defs>
+<rect width="1200" height="420" rx="18" fill="#070b14"/>
+<rect width="1200" height="420" rx="18" fill="url(#puntos)"/>
+<rect width="1200" height="420" rx="18" fill="url(#luz)"/>
+<rect x="1" y="1" width="1198" height="418" rx="17" fill="none" stroke="#1e2a3d" stroke-width="2"/>
+<circle cx="34" cy="34" r="7" fill="#ff5f57"/><circle cx="58" cy="34" r="7" fill="#febc2e"/><circle cx="82" cy="34" r="7" fill="#28c840"/>
+<text x="1168" y="40" font-size="18" fill="#5a6880" text-anchor="end">cat memes.txt</text>
+<line x1="2" y1="64" x2="1198" y2="64" stroke="#1e2a3d" stroke-width="2"/><g class="m1"><text x="50" y="118" font-size="20" fill="#4d9fff">$ <tspan fill="#e8eef7">git log --oneline</tspan></text></g><g class="m2"><text x="50" y="160" font-size="20"><tspan fill="#ffb142">a1f3c2e</tspan>  <tspan fill="#e8eef7">arreglo final</tspan></text></g><g class="m3"><text x="50" y="196" font-size="20"><tspan fill="#ffb142">b7d9e01</tspan>  <tspan fill="#e8eef7">arreglo final (ahora sí)</tspan></text></g><g class="m4"><text x="50" y="232" font-size="20"><tspan fill="#ffb142">c4e8a77</tspan>  <tspan fill="#e8eef7">arreglo final final</tspan></text></g><g class="m5"><text x="50" y="268" font-size="20"><tspan fill="#ffb142">d2b6f19</tspan>  <tspan fill="#e8eef7">ok, este es el bueno</tspan></text></g><g class="m6"><text x="50" y="304" font-size="20"><tspan fill="#ffb142">e9a0c3d</tspan>  <tspan fill="#e8eef7">por favor funciona</tspan></text></g><g class="m7"><text x="50" y="340" font-size="20"><tspan fill="#ffb142">f00d4e2</tspan>  <tspan fill="#e8eef7">funciona. NO TOCAR</tspan></text></g><g class="m8"><rect x="150" y="110" width="900" height="110" rx="14" fill="#101827" stroke="#4d9fff" stroke-width="1.5"/>
+<rect x="176" y="135" width="60" height="60" rx="12" fill="#10213a" stroke="#4d9fff" stroke-width="1.5"/>
+<path d="M195 151h22v10a11 11 0 0 1-22 0zM195 155h-6a5 5 0 0 0 6 8M217 155h6a5 5 0 0 1-6 8M206 172v7M198 182h16" fill="none" stroke="#ffb142" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="262" y="150" font-size="15" fill="#4d9fff" letter-spacing="3">★ LOGRO DESBLOQUEADO · ACH 3/10</text>
+<text x="262" y="182" font-size="24" fill="#e8eef7" font-weight="bold">Funciona en mi máquina</text>
+<text x="262" y="206" font-size="16" fill="#94a0b4">Raro: el 99% de los devs ya lo tiene.</text></g><g class="m9"><rect x="150" y="250" width="900" height="110" rx="14" fill="#101827" stroke="#4d9fff" stroke-width="1.5"/>
+<rect x="176" y="275" width="60" height="60" rx="12" fill="#10213a" stroke="#4d9fff" stroke-width="1.5"/>
+<path d="M195 291h22v10a11 11 0 0 1-22 0zM195 295h-6a5 5 0 0 0 6 8M217 295h6a5 5 0 0 1-6 8M206 312v7M198 322h16" fill="none" stroke="#ffb142" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="262" y="290" font-size="15" fill="#4d9fff" letter-spacing="3">★ LOGRO DESBLOQUEADO · ACH 7/10</text>
+<text x="262" y="322" font-size="24" fill="#e8eef7" font-weight="bold">Arreglé 1 bug, salieron 3</text>
+<text x="262" y="346" font-size="16" fill="#94a0b4">Nivel: hidra. Sigue así.</text></g><g class="m10"><text x="80" y="120" font-size="19" fill="#e8eef7">Escribir código</text><text x="1120" y="120" font-size="19" fill="#4d9fff" text-anchor="end">15%</text>
+<rect x="80" y="134" width="1040" height="16" rx="8" fill="#101827" stroke="#1e2a3d"/>
+<rect x="80" y="134" width="156" height="16" rx="8" fill="#4d9fff"/></g><g class="m11"><text x="80" y="190" font-size="19" fill="#e8eef7">Buscar por qué no funciona</text><text x="1120" y="190" font-size="19" fill="#4d9fff" text-anchor="end">60%</text>
+<rect x="80" y="204" width="1040" height="16" rx="8" fill="#101827" stroke="#1e2a3d"/>
+<rect x="80" y="204" width="624" height="16" rx="8" fill="#ffb142"/></g><g class="m12"><text x="80" y="260" font-size="19" fill="#e8eef7">"Es un cambio pequeño" (no lo era)</text><text x="1120" y="260" font-size="19" fill="#4d9fff" text-anchor="end">20%</text>
+<rect x="80" y="274" width="1040" height="16" rx="8" fill="#101827" stroke="#1e2a3d"/>
+<rect x="80" y="274" width="208" height="16" rx="8" fill="#4d9fff"/></g><g class="m13"><text x="80" y="330" font-size="19" fill="#e8eef7">Café</text><text x="1120" y="330" font-size="19" fill="#4d9fff" text-anchor="end">5%</text>
+<rect x="80" y="344" width="1040" height="16" rx="8" fill="#101827" stroke="#1e2a3d"/>
+<rect x="80" y="344" width="52" height="16" rx="8" fill="#4d9fff"/></g><g class="m14"><text x="108" y="40" font-size="18" fill="#5a6880">~/mi-proyecto — git log</text></g><g class="m15"><text x="108" y="40" font-size="18" fill="#5a6880">~/notificaciones</text></g><g class="m16"><text x="108" y="40" font-size="18" fill="#5a6880">~/mi-dia-como-dev — top</text></g><circle cx="576.0" cy="392" r="5" fill="#1e2a3d"/><circle cx="600.0" cy="392" r="5" fill="#1e2a3d"/><circle cx="624.0" cy="392" r="5" fill="#1e2a3d"/><g class="m17"><circle cx="576.0" cy="392" r="5" fill="#4d9fff"/></g><g class="m18"><circle cx="600.0" cy="392" r="5" fill="#4d9fff"/></g><g class="m19"><circle cx="624.0" cy="392" r="5" fill="#4d9fff"/></g>
+</svg>
