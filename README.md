@@ -2,7 +2,7 @@
   <img src="assets/banner.svg" alt="ABE_GAMA_ — Desarrollador full-stack: apps y webs reales para negocios" width="100%">
 </a>
 
-<img src="https://raw.githubusercontent.com/AdrianAbeGama/AdrianAbeGama/output/contribuciones.svg" alt="Mis contribuciones del último año (incluye repos privados)" width="100%">
+<img src="assets/bug-invaders.svg" alt="Bug Invaders: un Space Invaders donde mi nave elimina bugs (null, undefined, 404, CORS...) y los tests los bloquean" width="100%">
 
 <a href="https://safirox-zeta.vercel.app">
   <img src="assets/nuevo-safirox.svg" alt="Safirox — tienda online que se arma según el rubro del negocio (Next.js)" width="100%">
@@ -43,5 +43,5 @@
 </details>
 
 <p align="center">
-  <sub>🔒 el código de mis clientes vive en repos privados · estos paneles los dibuja <a href="scripts">Python</a> y el de contribuciones se actualiza solo cada día con GitHub Actions</sub>
+  <sub>🔒 el código de mis clientes vive en repos privados · estos paneles y el minijuego los dibuja <a href="scripts/portada.py">Python</a>, en SVG animado puro</sub>
 </p>

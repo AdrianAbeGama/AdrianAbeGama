@@ -469,8 +469,131 @@ def secreto():
     guardar("secreto.svg", svg(H, cuerpo))
 
 
+# ---------------------------------------------------------------- 9. minijuego: Bug Invaders
+SPRITES = {
+    "pulpo": (["...##...", "..####..", ".######.", "##.##.##", "########", "..#..#..", ".#.##.#.", "#.#..#.#"],
+              ["...##...", "..####..", ".######.", "##.##.##", "########", ".#.##.#.", "#......#", ".#....#."]),
+    "cangrejo": (["..#.....#..", "...#...#...", "..#######..", ".##.###.##.", "###########", "#.#######.#", "#.#.....#.#", "...##.##..."],
+                 ["..#.....#..", "#..#...#..#", "#.#######.#", "###.###.###", "###########", ".#########.", "..#.....#..", ".#.......#."]),
+    "nave": (["......#......", ".....###.....", ".....###.....", ".###########.", "#############", "#############", "#############", "#############"],),
+    "boom": (["....#...#....", ".#...#.#...#.", "..#.......#..", "...#.....#...", "##.........##", "...#.....#...", "..#.......#..", ".#...#.#...#.", "....#...#...."],),
+}
+
+
+def sprite(nombre, x, y, p, frame=0):
+    filas = SPRITES[nombre][frame]
+    return "".join(f'<rect x="{x + c*p}" y="{y + f*p}" width="{p}" height="{p}"/>'
+                   for f, linea in enumerate(filas) for c, v in enumerate(linea) if v == "#")
+
+
+def invasores():
+    """Un Space Invaders que se juega solo: la nave elimina los bugs y las pruebas aguantan los disparos."""
+    H, T, PASO = 500, 16.0, 0.4
+    pct = lambda t: f"{t / T * 100:.2f}%"
+    # la formación se mueve a saltos, como el arcade: 12 px cada 0,4 s, ida y vuelta
+    ida = [12 * i for i in range(6)] + [12 * i for i in range(4, -6, -1)] + [12 * i for i in range(-4, 0)]
+    pasos = (ida * 3)[: int(T / PASO)]
+    f = lambda t: pasos[int(t / PASO) % len(pasos)]
+    filas = [("pulpo", 6, 150, "#ff5d8f", 30, ["null", "undefined", "NaN", "404", "500", "CORS", "typo"]),
+             ("cangrejo", 5, 236, AMBAR, 20, ["race", "leak", "loop∞", "merge", "regex", "IE11", "deadline"])]
+    cols = [240 + i * 120 for i in range(7)]
+    nave_y, nave_p = 410, 5
+    css, cuerpo = [], []
+    n = 0
+
+    def anim(keyframes, extra=""):
+        nonlocal n
+        n += 1
+        css.append(f".a{n}{{animation:a{n} {T}s linear infinite;{extra}}}@keyframes a{n}{{{keyframes}}}")
+        return f"a{n}"
+
+    # orden de los disparos (fijo) y momentos en que cae cada bug
+    objetivos = [(r, c) for r in range(2) for c in range(7)]
+    orden = [objetivos[i] for i in (10, 3, 12, 6, 0, 8, 13, 4, 1, 11, 7, 2, 9, 5)]
+    golpes = {}
+    for k, (r, c) in enumerate(orden):
+        golpes[(r, c)] = 1.0 + 0.8 * k
+
+    # formación
+    formacion = []
+    for r, (tipo, p, y, color, pts, nombres) in enumerate(filas):
+        ancho = len(SPRITES[tipo][0][0]) * p
+        for c, x in enumerate(cols):
+            th = golpes[(r, c)]
+            x0 = x - ancho / 2
+            vivo = anim(f"0%{{opacity:0}}3%{{opacity:1}}{pct(th)}{{opacity:1}}{pct(th + 0.02)},100%{{opacity:0}}")
+            a = anim("0%{opacity:1}50%{opacity:0}", "animation-duration:1s;animation-timing-function:steps(1)")
+            b = anim("0%{opacity:0}50%{opacity:1}", "animation-duration:1s;animation-timing-function:steps(1)")
+            boom = anim(f"0%,{pct(th)}{{opacity:0}}{pct(th + 0.02)},{pct(th + 0.3)}{{opacity:1}}{pct(th + 0.34)},100%{{opacity:0}}")
+            mas = anim(f"0%,{pct(th)}{{opacity:0;transform:translateY(0)}}{pct(th + 0.05)}{{opacity:1}}{pct(th + 0.7)}{{opacity:0;transform:translateY(-26px)}}100%{{opacity:0}}")
+            formacion.append(f'''<g class="{vivo}" fill="{color}"><g class="{a}">{sprite(tipo, x0, y, p, 0)}</g><g class="{b}" style="opacity:0">{sprite(tipo, x0, y, p, 1)}</g>
+<text x="{x}" y="{y + 64}" font-size="14" fill="{color}" opacity=".75" text-anchor="middle">{escape(nombres[c])}</text></g>
+<g class="{boom}" style="opacity:0" fill="{AMBAR}">{sprite("boom", x - 26, y, 4)}</g>
+<text class="{mas}" style="opacity:0" x="{x}" y="{y - 6}" font-size="16" fill="{TEXTO}" text-anchor="middle" font-weight="bold">+{pts}</text>''')
+    valores = ";".join(f"{v} 0" for v in pasos)
+    cuerpo.append(f'<g>{"".join(formacion)}<animateTransform attributeName="transform" type="translate" calcMode="discrete" dur="{T}s" repeatCount="indefinite" values="{valores}"/></g>')
+
+    # disparos de la nave y su recorrido
+    marcos, puntos, x_ant = [], 0, 600
+    nave_w = 13 * nave_p
+    for k, (r, c) in enumerate(orden):
+        th = golpes[(r, c)]
+        y_obj = filas[r][2] + 20
+        vuelo = (nave_y - y_obj) / 1100
+        tf = th - vuelo
+        x = cols[c] + f(th)
+        marcos += [(tf - 0.12, x), (tf + 0.04, x)]
+        laser = anim(f"0%,{pct(tf)}{{opacity:0;transform:translateY(0)}}{pct(tf + 0.01)}{{opacity:1;transform:translateY(0)}}"
+                     f"{pct(th)}{{opacity:1;transform:translateY({y_obj - nave_y}px)}}{pct(th + 0.01)},100%{{opacity:0;transform:translateY({y_obj - nave_y}px)}}")
+        cuerpo.append(f'<rect class="{laser}" style="opacity:0" x="{x - 2}" y="{nave_y - 18}" width="4" height="18" rx="2" fill="{AZUL}"/>')
+    pasos_nave = [(0, 600)] + marcos + [(12.6, 600), (T, 600)]
+    kf = "".join(f"{pct(t)}{{transform:translateX({x - nave_w/2:.0f}px)}}" for t, x in pasos_nave)
+    nave = anim(kf, "animation-timing-function:ease-in-out")
+    cuerpo.append(f'<g class="{nave}" fill="{AZUL}">{sprite("nave", 0, nave_y, nave_p)}<rect x="{nave_w/2 - 1}" y="{nave_y + 44}" width="2" height="6" fill="{AZUL}" opacity=".5"/></g>')
+
+    # barreras: las pruebas atajan los disparos de los bugs
+    for i, (bx, nombre) in enumerate([(300, "tests"), (600, "CI"), (900, "review")]):
+        bloque = ["..######..", ".########.", "##########", "##########", "###....###", "##......##"]
+        cuerpo.append(f'<g fill="{VERDE}" opacity=".85">{sprite_libre(bloque, bx - 40, 340, 8)}</g>'
+                      f'<text x="{bx}" y="406" font-size="14" fill="{VERDE}" text-anchor="middle">{nombre}</text>')
+    for t0, bx in [(3.1, 300), (6.5, 900), (9.7, 600)]:
+        cae = anim(f"0%,{pct(t0)}{{opacity:0;transform:translateY(0)}}{pct(t0 + 0.01)}{{opacity:1}}{pct(t0 + 0.55)}{{opacity:1;transform:translateY(62px)}}{pct(t0 + 0.56)},100%{{opacity:0;transform:translateY(62px)}}")
+        chispa = anim(f"0%,{pct(t0 + 0.55)}{{opacity:0}}{pct(t0 + 0.57)},{pct(t0 + 0.8)}{{opacity:1}}{pct(t0 + 0.85)},100%{{opacity:0}}")
+        cuerpo.append(f'<path class="{cae}" style="opacity:0" d="M{bx} 272l4 6-4 6 4 6-4 6" fill="none" stroke="#ff5d8f" stroke-width="3"/>'
+                      f'<text class="{chispa}" style="opacity:0" x="{bx}" y="336" font-size="14" fill="{VERDE}" text-anchor="middle" font-weight="bold">BLOCKED</text>')
+
+    # marcador: cambia en cada bug eliminado
+    momentos = [0.0] + [golpes[o] for o in orden] + [T]
+    for k in range(len(momentos) - 1):
+        if k:
+            r, _ = orden[k - 1]
+            puntos += filas[r][4]
+        t0, t1 = momentos[k], momentos[k + 1]
+        vis = anim(f"0%,{pct(t0)}{{opacity:0}}{pct(t0 + 0.001)},{pct(t1)}{{opacity:1}}{pct(t1 + 0.001)},100%{{opacity:0}}" if k else
+                   f"0%,{pct(t1)}{{opacity:1}}{pct(t1 + 0.001)},100%{{opacity:0}}")
+        cuerpo.append(f'<text class="{vis}" x="60" y="118" font-size="20" fill="{TEXTO}">SCORE <tspan fill="{AZUL}">{puntos:06d}</tspan></text>')
+    fin = anim(f"0%,{pct(12.2)}{{opacity:0;transform:scale(.9)}}{pct(12.5)},{pct(15.4)}{{opacity:1;transform:none}}{pct(15.8)},100%{{opacity:0}}",
+               "transform-origin:600px 300px")
+    cuerpo.append(f'''<g class="{fin}" style="opacity:0">
+<text x="600" y="288" font-size="40" fill="{TEXTO}" text-anchor="middle" font-weight="bold" letter-spacing="6">WAVE CLEARED</text>
+<text x="600" y="322" font-size="20" fill="{VERDE}" text-anchor="middle">0 bugs en producción · deploy ✓</text></g>''')
+    hud = f'''{barra("~/bug-invaders — npm run fix", "1UP")}
+<text x="600" y="118" font-size="22" fill="{AMBAR}" text-anchor="middle" font-weight="bold" letter-spacing="8">BUG INVADERS</text>
+<text x="{W-60}" y="118" font-size="20" fill="{TEXTO}" text-anchor="end">HI <tspan fill="{AZUL}">009999</tspan></text>
+<line x1="40" y1="{H-30}" x2="{W-40}" y2="{H-30}" stroke="{VERDE}" stroke-opacity=".4" stroke-width="2"/>
+<text x="60" y="{H-44}" font-size="14" fill="{TENUE}">VIDAS <tspan fill="{AZUL}">▲ ▲ ▲</tspan></text>
+<text x="{W-60}" y="{H-44}" font-size="14" fill="{AMBAR}" text-anchor="end" class="cursor">INSERT COIN</text>'''
+    guardar("bug-invaders.svg", svg(H, hud + "".join(cuerpo), "\n".join(css)))
+
+
+def sprite_libre(filas, x, y, p):
+    return "".join(f'<rect x="{x + c*p}" y="{y + f*p}" width="{p}" height="{p}"/>'
+                   for f, linea in enumerate(filas) for c, v in enumerate(linea) if v == "#")
+
+
 if __name__ == "__main__":
     os.makedirs(SALIDA, exist_ok=True)
+    invasores()
     banner()
     for p in DESTACADOS:
         destacado(p)
